@@ -1,11 +1,12 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
-const Schema = mongoose.Schema;
-const ObjectId = mongoose.Types.ObjectId;
+const Schema = mongoose.Schema
+// const ObjectId = mongoose.Types.ObjectId;
 
-const BlogPost = new Schema({
-  author: ObjectId,
+const BlogSchema = new Schema({
   title: String,
   body: String,
-  date: Date
-});
+  date: Date,
+})
+
+export const Blog = mongoose.model('blog', BlogSchema)
