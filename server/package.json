@@ -5,18 +5,21 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --watch \"api/**\" --ext \"ts,json,mjs\" --exec \"ts-node api/router.ts\""
+    "dev": "nodemon --watch \"api/**\" --ext \"ts,json\" --exec \"ts-node api/router.ts\""
   },
   "author": "Juan Hernandez",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongoose": "^7.0.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
     "@types/node": "^18.14.4",
-    "nodemon": "^2.0.21"
+    "nodemon": "^2.0.21",
+    "prettier": "2.8.4"
   }
 }
