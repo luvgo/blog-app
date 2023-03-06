@@ -7,6 +7,10 @@ export interface TypedRequestBody<T> extends Express.Request {
   body: T
 }
 
+export interface TypedRequestParam<T> extends Express.Request {
+  params: T
+}
+
 /*
  * typesafety and intellisense from the query that is passed
  */

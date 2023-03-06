@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --watch \"api/**\" --ext \"ts,json\" --exec \"ts-node api/router.ts\""
+    "dev": "nodemon --watch \"api/**\" --ext \"ts,json\" --exec \"ts-node api/server.ts\""
   },
   "author": "Juan Hernandez",
   "license": "ISC",
