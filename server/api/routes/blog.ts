@@ -1,43 +1,59 @@
 import express from 'express'
-import { Request, Response } from 'express'
-import { TypedRequestBody, TypedRequestParam } from '../../utils/RequestTypes'
-import { BlogType } from '../../../types/SchemaTypes'
-import { Blog } from '../model'
-import { TypedResponse } from '../../utils/ResponseTypes'
-import { exit } from 'process'
+import { TypedRequestBody, TypedRequestParam } from '../../types/RequestTypes'
+import { BlogType } from '../../types/SchemaTypes'
+import { Blog, User } from '../model'
+import { TypedResponse } from '../../types/ResponseTypes'
+import mongoose from 'mongoose'
 
-export const router = express.Router()
+export const blogRouter = express.Router()
 
 // Returns all the Blogs from MongoDB
-router.get('/', async (req, res: TypedResponse<BlogType[]>) => {
+blogRouter.get('/', async (req, res: TypedResponse<BlogType[]>) => {
   const posts: BlogType[] = await Blog.find()
   res.json(posts)
 })
 
-// Posts a blog to MongoDB and returns a blog to frontendO
-router.post('/', async (req: TypedRequestBody<BlogType>, res) => {
-  const post = await Blog.create({
-    title: req.body.title,
-    definition: req.body.definition,
-    author: req.body.author,
-  })
-  res.json(post)
-})
+// Posts a blog to MongoDB and returns a blog to frontend
+blogRouter.post(
+  '/',
+  async (req: TypedRequestBody<BlogType>, res: TypedResponse<BlogType>) => {
+    const post = await Blog.create({
+      title: req.body.title,
+      definition: req.body.definition,
+      author: '6405765f16dc235090b2a6dc',
+    })
+    res.json(post)
+  },
+)
 
-router
+blogRouter
   .route('/:id')
-  .get(async (req, res: TypedResponse<BlogType>) => {
-    const blogId = await Blog.exists({ _id: req.params.id })
-    if (blogId) {
-      const blog = (await Blog.findById(blogId)) as BlogType
-      res.json(blog)
-    } else {
-    }
+  .get(async (req: TypedRequestBody<BlogType>, res) => {
+    res.send(req.body)
   })
-  .delete(async (req, res: TypedResponse<BlogType>) => {
-    const blogId = await Blog.exists({ _id: req.params.id })
-    if (blogId) {
-      const blog = (await Blog.findByIdAndDelete(blogId)) as BlogType
+  .delete(
+    async (req: TypedRequestBody<BlogType>, res: TypedResponse<BlogType>) => {
+      const blog = req.body
       res.json(blog)
+    },
+  )
+
+blogRouter.param(
+  'id',
+  async (req: TypedRequestBody<BlogType>, res, next, id) => {
+    try {
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        next(new Error('Invalid blog id'))
+      }
+      const blog = await Blog.findById(id)
+      if (!blog) {
+        next(new Error('Invalid blog id'))
+      }
+      req.body = blog as unknown as BlogType
+      next()
+    } catch (err) {
+      console.error(err)
+      next(err)
     }
-  })
+  },
+)

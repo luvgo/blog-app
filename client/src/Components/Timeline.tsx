@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { AuthorType, BlogType } from '../../../types/SchemaTypes'
+import { UserType, BlogType } from '../types/SchemaTypes'
 import Container from './Container'
 import { Navbar } from './Navbar'
 
@@ -12,7 +12,7 @@ function BlogPost({
   title: string
   date: string
   definition: string
-  author: AuthorType
+  author: UserType
 }) {
   return (
     <li className='p-2 m-3 bg-slate-700 hover:bg-slate-600 rounded-md transition-all hover:rounded-xl'>
@@ -31,7 +31,7 @@ function BlogPost({
 export function Timeline() {
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch('http://127.0.0.1:5000/api/v1')
+      const res = await fetch('http://127.0.0.1:5000/api/v1/blog')
       const blog: BlogType[] = await res.json()
       setBlog(blog)
     }

@@ -1,9 +1,10 @@
 import mongoose from 'mongoose'
+import { BlogType, UserType } from '../types/SchemaTypes'
 
 const Schema = mongoose.Schema
-const ObjectId = mongoose.SchemaTypes.ObjectId
+const ObjectId = mongoose.Types.ObjectId
 
-const UserSchema = new Schema({
+const UserSchema = new Schema<UserType>({
   _id: {
     type: ObjectId,
     auto: true,
@@ -20,7 +21,8 @@ const UserSchema = new Schema({
   },
   blogs: {
     type: [ObjectId],
-    ref: 'blog',
+    ref: 'Blog',
+    requiredPaths: false,
   },
   createdAt: {
     type: Date,
@@ -33,7 +35,7 @@ const UserSchema = new Schema({
   },
 })
 
-const BlogSchema = new Schema({
+const BlogSchema = new Schema<BlogType>({
   _id: {
     type: ObjectId,
     auto: true,
@@ -67,6 +69,6 @@ const BlogSchema = new Schema({
   },
 })
 
-export const Blog = mongoose.model('Blog', BlogSchema)
+export const Blog = mongoose.model<BlogType>('Blog', BlogSchema)
 
-export const User = mongoose.model('User', UserSchema)
+export const User = mongoose.model<UserType>('User', UserSchema)
