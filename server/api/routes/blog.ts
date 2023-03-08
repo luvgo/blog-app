@@ -9,7 +9,7 @@ export const blogRouter = express.Router()
 
 // Returns all the Blogs from MongoDB
 blogRouter.get('/', async (req, res: TypedResponse<BlogType[]>) => {
-  const posts: BlogType[] = await Blog.find()
+  const posts: BlogType[] = await Blog.find().populate('author')
   res.json(posts)
 })
 
@@ -29,7 +29,7 @@ blogRouter.post(
 blogRouter
   .route('/:id')
   .get(async (req: TypedRequestBody<BlogType>, res) => {
-    res.send(req.body)
+    res.json(req.body)
   })
   .delete(
     async (req: TypedRequestBody<BlogType>, res: TypedResponse<BlogType>) => {
@@ -43,16 +43,12 @@ blogRouter.param(
   async (req: TypedRequestBody<BlogType>, res, next, id) => {
     try {
       if (!mongoose.Types.ObjectId.isValid(id)) {
-        next(new Error('Invalid blog id'))
+        next(new Error('Invalid Blog Id'))
       }
-      const blog = await Blog.findById(id)
-      if (!blog) {
-        next(new Error('Invalid blog id'))
-      }
+      const blog = await Blog.findById(id).populate('author')
       req.body = blog as unknown as BlogType
       next()
     } catch (err) {
-      console.error(err)
       next(err)
     }
   },

@@ -3,16 +3,16 @@ export type UserType = {
   name: string
   email: string
   blogs?: number[]
-  createdAt: Date
-  updatedAt: Date
+  createdAt: string
+  updatedAt: string
 }
 
 export type BlogType = {
   _id: number
   title: string
   definition?: string
-  createdAt: Date
-  updatedAt: Date
+  createdAt: string
+  updatedAt: string
   author: UserType
   blog: Buffer
 }
